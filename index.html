@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scanner de Code-Barres</title>
+    <script src="https://unpkg.com/quagga/dist/quagga.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      #scanner-container {
+        width: 100%;
+        max-width: 400px;
+        margin: auto;
+      }
+      video {
+        width: 100%;
+      }
+      #result {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Scanner de Code-Barres</h1>
+    <div id="scanner-container">
+      <video id="video" autoplay></video>
+    </div>
+    <p id="result">Scannez un produit...</p>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        Quagga.init(
+          {
+            inputStream: {
+              name: "Live",
+              type: "LiveStream",
+              target: document.querySelector("#scanner-container"),
+            },
+            decoder: { readers: ["ean_reader"] },
+          },
+          function (err) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            Quagga.start();
+          }
+        );
+
+        Quagga.onDetected(function (result) {
+          let code = result.codeResult.code;
+          document.getElementById("result").innerText =
+            "Code détecté : " + code;
+          fetch(`https://world.openfoodfacts.org/api/v0/product/${code}.json`)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === 1) {
+                let ingredients =
+                  data.product.ingredients_text ||
+                  "Ingrédients non disponibles";
+                if (/sucre|sugar/i.test(ingredients)) {
+                  alert("Attention : Ce produit contient du sucre !");
+                } else {
+                  alert("Pas de sucre détecté dans les ingrédients.");
+                }
+              } else {
+                alert("Produit non trouvé.");
+              }
+            })
+            .catch((error) => console.error("Erreur API :", error));
+        });
+      });
+    </script>
+  </body>
+</html>
