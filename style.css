@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 81px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+#scanner-container {
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+video {
+  width: 100%;
+}
+
+#result {
+  margin: 20px 0 20px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
