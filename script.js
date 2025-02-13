@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.status === 1) {
           let ingredients =
             data.product.ingredients_text || "Ingrédients non disponibles";
-          if (/sucre|sugar/i.test(ingredients)) {
-            alert("Attention : Ce produit contient du sucre !");
+          if (/gluten|gluten/i.test(ingredients)) {
+            alert("Attention : Ce produit contient du gluten !");
           } else {
-            alert("Pas de sucre détecté dans les ingrédients.");
+            alert("Pas de gluten détecté dans les ingrédients.");
           }
         } else {
           alert("Produit non trouvé.");
