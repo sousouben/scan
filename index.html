@@ -5,95 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Scanner de Code-Barres pour détecter du gluten"
+      content="Scanner de Code-Barres pour détécter du gluten"
     />
     <link rel="stylesheet" href="style.css" />
-    <title>Scanner de Code-Barres pour détecter du gluten</title>
+    <title>Scanner de Code-Barres pour détécter du gluten</title>
     <script src="https://unpkg.com/quagga/dist/quagga.min.js"></script>
   </head>
   <body>
     <header>
-      <h1>Détecteur de gluten</h1>
+      <h1>Détécteur de gluten</h1>
     </header>
     <main>
       <div id="scanner-container">
         <p id="result">Scannez un produit...</p>
         <video id="video" autoplay></video>
       </div>
-      <div id="product-info">
-        <p id="gluten-info"></p>
-        <p id="ingredients"></p>
-      </div>
     </main>
-    <footer>
-      <p>&copy; 2025 Détecteur de Gluten</p>
-    </footer>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          document.getElementById("gluten-info").innerText =
-            "Votre navigateur ne supporte pas l'accès à la caméra.";
-          return;
-        }
-
-        Quagga.init(
-          {
-            inputStream: {
-              name: "Live",
-              type: "LiveStream",
-              target: document.querySelector("#scanner-container"),
-              constraints: {
-                width: 640,
-                height: 480,
-                facingMode: "environment",
-              },
-            },
-            decoder: { readers: ["ean_reader"] },
-          },
-          function (err) {
-            if (err) {
-              console.error("Erreur lors de l'initialisation de Quagga :", err);
-              return;
-            }
-            Quagga.start();
-          }
-        );
-
-        Quagga.onDetected(function (result) {
-          let code = result.codeResult.code;
-          document.getElementById("result").innerText =
-            "Code détecté : " + code;
-          fetch(`https://world.openfoodfacts.org/api/v0/product/${code}.json`)
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.status === 1) {
-                let ingredients =
-                  data.product.ingredients_text ||
-                  "Ingrédients non disponibles";
-                document.getElementById("ingredients").innerText =
-                  "Ingrédients : " + ingredients;
-                if (
-                  /gluten|blé|seigle|orge|avoine|triticale/i.test(ingredients)
-                ) {
-                  document.getElementById("gluten-info").innerText =
-                    "Attention : Ce produit contient du gluten !";
-                } else {
-                  document.getElementById("gluten-info").innerText =
-                    "Pas de gluten détecté dans les ingrédients.";
-                }
-              } else {
-                document.getElementById("gluten-info").innerText =
-                  "Produit non trouvé.";
-                document.getElementById("ingredients").innerText = "";
-              }
-            })
-            .catch((error) => {
-              console.error("Erreur API :", error);
-              document.getElementById("gluten-info").innerText =
-                "Une erreur est survenue lors de la récupération des données.";
-            });
-        });
-      });
-    </script>
+    <footer></footer>
+    <script src="script.js"></script>
   </body>
 </html>
