@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.status === 1) {
           let ingredients =
             data.product.ingredients_text || "Ingrédients non disponibles";
-          if (/gluten|gluten/i.test(ingredients)) {
+          if (/gluten|blé|seigle|orge|avoine|triticale/i.test(ingredients)) {
             alert("Attention : Ce produit contient du gluten !");
           } else {
             alert("Pas de gluten détecté dans les ingrédients.");
