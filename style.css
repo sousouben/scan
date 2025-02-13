@@ -19,6 +19,12 @@ h1 {
   font-size: 30px;
 }
 
+#scanner-container {
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
 video {
   width: 100%;
 }
