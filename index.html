@@ -20,14 +20,19 @@
         <p id="result">Scannez un produit...</p>
         <video id="video" autoplay></video>
       </div>
+      <div id="product-info">
+        <p id="gluten-info"></p>
+        <p id="ingredients"></p>
+      </div>
     </main>
     <footer>
-      <p>&copy; 2025 Détecteur de Gluten par souad Benhabbour</p>
+      <p>&copy; 2025 Détecteur de Gluten</p>
     </footer>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          alert("Votre navigateur ne supporte pas l'accès à la caméra.");
+          document.getElementById("gluten-info").innerText =
+            "Votre navigateur ne supporte pas l'accès à la caméra.";
           return;
         }
 
@@ -65,22 +70,27 @@
                 let ingredients =
                   data.product.ingredients_text ||
                   "Ingrédients non disponibles";
+                document.getElementById("ingredients").innerText =
+                  "Ingrédients : " + ingredients;
                 if (
                   /gluten|blé|seigle|orge|avoine|triticale/i.test(ingredients)
                 ) {
-                  alert("Attention : Ce produit contient du gluten !");
+                  document.getElementById("gluten-info").innerText =
+                    "Attention : Ce produit contient du gluten !";
                 } else {
-                  alert("Pas de gluten détecté dans les ingrédients.");
+                  document.getElementById("gluten-info").innerText =
+                    "Pas de gluten détecté dans les ingrédients.";
                 }
               } else {
-                alert("Produit non trouvé.");
+                document.getElementById("gluten-info").innerText =
+                  "Produit non trouvé.";
+                document.getElementById("ingredients").innerText = "";
               }
             })
             .catch((error) => {
               console.error("Erreur API :", error);
-              alert(
-                "Une erreur est survenue lors de la récupération des données."
-              );
+              document.getElementById("gluten-info").innerText =
+                "Une erreur est survenue lors de la récupération des données.";
             });
         });
       });
